@@ -969,6 +969,18 @@
                 <td><button class="select-btn" id="select-yahtzee" onclick="selectScore('yahtzee')" disabled></button></td>
             </tr>
             <tr>
+                <td>Mahtzee Bonus</td>
+                <td>Additional Mahtzees</td>
+                <td id="mahtzee-bonus">0</td>
+                <td>
+                    <div class="mahtzee-bonus-container">
+                        <div class="bonus-radio" id="mahtzee-bonus-1" onclick="selectMahtzeeBonus(1)"></div>
+                        <div class="bonus-radio" id="mahtzee-bonus-2" onclick="selectMahtzeeBonus(2)"></div>
+                        <div class="bonus-radio" id="mahtzee-bonus-3" onclick="selectMahtzeeBonus(3)"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <td>Chance</td>
                 <td>Any combination</td>
                 <td id="chance">-</td>
@@ -1046,6 +1058,8 @@
         };
         let totalScore = 0;
         let gameHistory = [];
+        let mahtzeeCount = 0;
+        let mahtzeeBonus = [false, false, false];
     
         // Helper functions
         function numberToWord(num) {
@@ -1407,6 +1421,10 @@
                 }
             }
             
+            // Add Mahtzee bonus to lower section
+            const mahtzeeBonus = parseInt(document.getElementById('mahtzee-bonus').textContent) || 0;
+            lowerSection += mahtzeeBonus;
+            
             // Update all totals
             document.getElementById('final-upper-total').textContent = upperSection;
             document.getElementById('final-bonus').textContent = bonus;
@@ -1511,6 +1529,17 @@
             
             // Initialize all upper section scores to 0
             initializeUpperSection();
+            
+            // Reset Mahtzee bonus
+            mahtzeeCount = 0;
+            mahtzeeBonus = [false, false, false];
+            document.getElementById('mahtzee-bonus').textContent = '0';
+            
+            // Reset bonus checkboxes
+            for (let i = 1; i <= 3; i++) {
+                const bonusElement = document.getElementById(`mahtzee-bonus-${i}`);
+                bonusElement.classList.remove('available', 'checked');
+            }
             
             // Hide modal
             const modal = document.getElementById('game-over-modal');
@@ -1714,6 +1743,9 @@
                 document.getElementById('roll-button').disabled = true;
             }
             
+            // After updating dice display and before updating possible scores
+            checkAdditionalMahtzee();
+            
             updatePossibleScores();
         }
 
@@ -1738,6 +1770,53 @@
             resetTurn();
             document.getElementById('next-turn-button').disabled = true;
             document.getElementById('roll-button').disabled = false;
+        }
+
+        // Add the selectMahtzeeBonus function
+        function selectMahtzeeBonus(index) {
+            const bonusElement = document.getElementById(`mahtzee-bonus-${index}`);
+            
+            // Only allow selection if this bonus is available
+            if (!bonusElement.classList.contains('available')) {
+                return;
+            }
+            
+            // Toggle the bonus
+            bonusElement.classList.add('checked');
+            mahtzeeBonus[index - 1] = true;
+            
+            // Update the score
+            updateMahtzeeBonusScore();
+            updateTotalScore();
+        }
+
+        // Add function to check for additional Mahtzees
+        function checkAdditionalMahtzee() {
+            // Check if we have a Mahtzee
+            const counts = new Array(6).fill(0);
+            for (let die of dice) {
+                counts[die-1]++;
+            }
+            
+            // If we have a Mahtzee and the original Mahtzee category is filled with 50 points
+            if (counts.includes(5) && scores['yahtzee'] === 50) {
+                mahtzeeCount++;
+                
+                // Enable the next available bonus checkbox
+                if (mahtzeeCount <= 3) {
+                    const bonusElement = document.getElementById(`mahtzee-bonus-${mahtzeeCount}`);
+                    bonusElement.classList.add('available');
+                }
+                
+                // Celebrate the additional Mahtzee
+                celebrateMahtzee();
+            }
+        }
+
+        // Add function to update Mahtzee bonus score
+        function updateMahtzeeBonusScore() {
+            const bonusScore = mahtzeeBonus.filter(bonus => bonus).length * 100;
+            document.getElementById('mahtzee-bonus').textContent = bonusScore;
         }
     </script>
     </body>
