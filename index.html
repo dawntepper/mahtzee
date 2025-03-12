@@ -813,6 +813,50 @@
             justify-content: space-between;
             margin-bottom: 10px;
         }
+
+        /* Add tooltip styles */
+        .dice-tooltip {
+            text-align: center;
+            padding: 8px;
+            background-color: rgba(74, 110, 169, 0.1);
+            border-radius: 5px;
+            margin: 10px auto;
+            max-width: 400px;
+            font-size: 0.9em;
+            color: var(--primary-color);
+        }
+
+        .tooltip-held {
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        /* Update instructions styles */
+        .instructions ul {
+            list-style-type: none;
+            padding-left: 20px;
+            margin: 5px 0;
+        }
+
+        .instructions ul li {
+            margin: 5px 0;
+            position: relative;
+        }
+
+        .instructions ul li:before {
+            content: '•';
+            position: absolute;
+            left: -15px;
+            color: var(--primary-color);
+        }
+
+        .instructions p {
+            margin: 10px 0;
+        }
+
+        .instructions strong {
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
@@ -823,13 +867,28 @@
         <h3>How to Play Mahtzee:</h3>
         <ol>
             <li>You have 3 rolls per turn.</li>
-            <li>After each roll, you can hold dice by tapping them.</li>
+            <li>After each roll, you can hold dice by tapping them (they'll move up slightly when held).</li>
+            <li>Only held dice will be rerolled on your next roll.</li>
             <li>After your rolls, choose a scoring category by clicking a "Select" button.</li>
             <li>Each category can only be used once.</li>
             <li>Try to get the highest score possible!</li>
         </ol>
-        <p><strong>Upper Section:</strong> Get as many of the same number as possible. Bonus for scoring 63+ points.</p>
-        <p><strong>Lower Section:</strong> Complete combinations like Three of a Kind, Full House, Straights, etc.</p>
+        <p><strong>Upper Section:</strong> Get as many of the same number as possible. Score 63+ points for a 35-point bonus!</p>
+        <p><strong>Lower Section:</strong> Complete combinations:</p>
+        <ul>
+            <li>Three/Four of a Kind: At least 3 or 4 matching dice</li>
+            <li>Full House: Three matching + a pair (25 points)</li>
+            <li>Small Straight: Four sequential dice (30 points)</li>
+            <li>Large Straight: Five sequential dice (40 points)</li>
+            <li>Mahtzee: All five dice matching (50 points)</li>
+            <li>Additional Mahtzees: Score 100 bonus points each (up to 3)</li>
+            <li>Chance: Any combination, sum all dice</li>
+        </ul>
+    </div>
+
+    <div class="dice-tooltip">
+        Click dice to hold/unhold them for your next roll. 
+        <span class="tooltip-held">Held dice will move up slightly</span>
     </div>
     
     <div class="tab-container">
