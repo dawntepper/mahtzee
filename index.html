@@ -790,6 +790,29 @@
             cursor: not-allowed;
             transform: none;
         }
+
+        .scorecard td.filled {
+            font-weight: bold;
+        }
+        
+        /* Running total styles */
+        #running-total {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        #points-needed {
+            font-size: 0.9em;
+            color: var(--secondary-color);
+            display: block;
+            text-align: center;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -915,6 +938,12 @@
                 <td>Sum of all 6s</td>
                 <td id="sixs">-</td>
                 <td><button class="select-btn" id="select-sixs" onclick="selectScore('sixs')" disabled></button></td>
+            </tr>
+            <tr>
+                <td>Running Total</td>
+                <td>Current Upper Total</td>
+                <td id="running-total">0</td>
+                <td><span id="points-needed">Need 63 for bonus</span></td>
             </tr>
             <tr>
                 <td>Bonus</td>
@@ -1398,6 +1427,12 @@
                     upperSection += (isNaN(value) ? 0 : value);
                 }
             }
+            
+            // Update running total and points needed
+            document.getElementById('running-total').textContent = upperSection;
+            const pointsNeeded = Math.max(0, 63 - upperSection);
+            document.getElementById('points-needed').textContent = 
+                pointsNeeded > 0 ? `Need ${pointsNeeded} more` : 'Bonus achieved!';
             
             // Update upper section progress
             document.getElementById('bonus-progress').textContent = upperSection + '/63';
