@@ -283,23 +283,111 @@
         }
         
         .select-btn {
-            background-color: var(--primary-color);
+            background-color: transparent;
+            color: var(--dark-color);
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .select-btn::before {
+            content: '';
+            display: block;
+            width: 28px;
+            height: 28px;
+            border: 2px solid #ff9f43;
+            border-radius: 4px;
+            background-color: transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-sizing: border-box;
+        }
+        
+        .select-btn:disabled::before {
+            border-color: #2ecc71;
+        }
+        
+        .select-btn:disabled.selected::before {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-color: #2ecc71;
+            animation: selectPop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .select-btn::after {
+            content: '✓';
+            position: absolute;
+            color: #2ecc71;
+            font-size: 20px;
+            font-weight: bold;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .select-btn.selected::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .select-btn.selected::before {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-color: #2ecc71;
+        }
+        
+        .select-btn:not(:disabled):hover::before {
+            background-color: rgba(255, 159, 67, 0.1);
+        }
+        
+        @keyframes selectPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        button#roll-button {
+            background: linear-gradient(135deg, #ff9f43 0%, #ff6b6b 100%);
             color: white;
             border: none;
-            border-radius: 4px;
-            padding: 5px 10px;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .select-btn:disabled {
-            background-color: #ccc;
+        button#roll-button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #ff8a2b 0%, #ff5252 100%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        button#roll-button:disabled {
+            background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
             cursor: not-allowed;
-        }
-        
-        .select-btn:hover:not(:disabled) {
-            background-color: var(--secondary-color);
+            transform: none;
         }
         
         .section-header {
@@ -528,6 +616,180 @@
         .quit-button:hover {
             background-color: #c92a36;
         }
+
+        .scorecard td {
+            vertical-align: middle;
+            height: 45px;
+        }
+
+        /* Mahtzee bonus styles */
+        .mahtzee-bonus-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bonus-radio {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #2a9d8f;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            background: transparent;
+        }
+
+        .bonus-radio.available {
+            cursor: pointer;
+            opacity: 1;
+        }
+
+        .bonus-radio:not(.available) {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .bonus-radio.checked::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: #ffcdd2;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bonus-radio.checked::after {
+            content: '✓';
+            position: absolute;
+            color: black;
+            font-size: 14px;
+            font-weight: bold;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Add theme toggle styles */
+        .theme-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .theme-toggle-switch {
+            width: 48px;
+            height: 24px;
+            background-color: #ccc;
+            border-radius: 12px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .theme-toggle.dark .theme-toggle-switch {
+            background-color: #2ecc71;
+        }
+
+        .theme-toggle.dark .theme-toggle-switch::before {
+            transform: translateX(24px);
+        }
+
+        /* Dark mode styles for dice */
+        .dark-mode .die[data-value="1"] {
+            background-color: #e74c3c;
+        }
+        
+        .dark-mode .die[data-value="2"] {
+            background-color: #f39c12;
+        }
+        
+        .dark-mode .die[data-value="3"] {
+            background-color: #2ecc71;
+        }
+        
+        .dark-mode .die[data-value="4"] {
+            background-color: #3498db;
+        }
+        
+        .dark-mode .die[data-value="5"] {
+            background-color: #9b59b6;
+        }
+        
+        .dark-mode .die[data-value="6"] {
+            background-color: #1abc9c;
+        }
+        
+        .dark-mode .die-dot {
+            background-color: white !important;
+            box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+        }
+        
+        .dark-mode .die.held {
+            filter: brightness(0.8);
+            transform: translateY(-5px);
+        }
+
+        /* Add unrolled dice style */
+        .die.unrolled {
+            background-color: #e0e0e0;
+            opacity: 0.7;
+        }
+        
+        .die.unrolled .die-dot {
+            background-color: #9e9e9e !important;
+        }
+
+        /* Add disabled dice style */
+        .die.disabled-die {
+            background-color: #e0e0e0;
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .die.disabled-die .die-dot {
+            background-color: #9e9e9e !important;
+        }
+
+        button#next-turn-button {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button#next-turn-button:disabled {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            cursor: not-allowed;
+            transform: none;
+        }
     </style>
 </head>
 <body>
@@ -604,6 +866,7 @@
         
         <div class="controls">
             <button id="roll-button" onclick="rollDice()">Roll Dice</button>
+            <button id="next-turn-button" onclick="startNextTurn()" disabled>Next Turn</button>
         </div>
         
         <h2>Scorecard</h2>
@@ -621,37 +884,37 @@
                 <td>Ones</td>
                 <td>Sum of all 1s</td>
                 <td id="ones">-</td>
-                <td><button class="select-btn" id="select-ones" onclick="selectScore('ones')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-ones" onclick="selectScore('ones')" disabled></button></td>
             </tr>
             <tr>
                 <td>Twos</td>
                 <td>Sum of all 2s</td>
                 <td id="twos">-</td>
-                <td><button class="select-btn" id="select-twos" onclick="selectScore('twos')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-twos" onclick="selectScore('twos')" disabled></button></td>
             </tr>
             <tr>
                 <td>Threes</td>
                 <td>Sum of all 3s</td>
                 <td id="threes">-</td>
-                <td><button class="select-btn" id="select-threes" onclick="selectScore('threes')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-threes" onclick="selectScore('threes')" disabled></button></td>
             </tr>
             <tr>
                 <td>Fours</td>
                 <td>Sum of all 4s</td>
                 <td id="fours">-</td>
-                <td><button class="select-btn" id="select-fours" onclick="selectScore('fours')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-fours" onclick="selectScore('fours')" disabled></button></td>
             </tr>
             <tr>
                 <td>Fives</td>
                 <td>Sum of all 5s</td>
                 <td id="fives">-</td>
-                <td><button class="select-btn" id="select-fives" onclick="selectScore('fives')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-fives" onclick="selectScore('fives')" disabled></button></td>
             </tr>
             <tr>
                 <td>sixs</td>
                 <td>Sum of all 6s</td>
                 <td id="sixs">-</td>
-                <td><button class="select-btn" id="select-sixs" onclick="selectScore('sixs')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-sixs" onclick="selectScore('sixs')" disabled></button></td>
             </tr>
             <tr>
                 <td>Bonus</td>
@@ -673,43 +936,43 @@
                 <td>Three of a Kind</td>
                 <td>Three dice alike</td>
                 <td id="three-of-a-kind">-</td>
-                <td><button class="select-btn" id="select-three-of-a-kind" onclick="selectScore('three-of-a-kind')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-three-of-a-kind" onclick="selectScore('three-of-a-kind')" disabled></button></td>
             </tr>
             <tr>
                 <td>Four of a Kind</td>
                 <td>Four dice alike</td>
                 <td id="four-of-a-kind">-</td>
-                <td><button class="select-btn" id="select-four-of-a-kind" onclick="selectScore('four-of-a-kind')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-four-of-a-kind" onclick="selectScore('four-of-a-kind')" disabled></button></td>
             </tr>
             <tr>
                 <td>Full House</td>
                 <td>Three + pair</td>
                 <td id="full-house">-</td>
-                <td><button class="select-btn" id="select-full-house" onclick="selectScore('full-house')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-full-house" onclick="selectScore('full-house')" disabled></button></td>
             </tr>
             <tr>
                 <td>Small Straight</td>
                 <td>Four in a row</td>
                 <td id="small-straight">-</td>
-                <td><button class="select-btn" id="select-small-straight" onclick="selectScore('small-straight')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-small-straight" onclick="selectScore('small-straight')" disabled></button></td>
             </tr>
             <tr>
                 <td>Large Straight</td>
                 <td>Five in a row</td>
                 <td id="large-straight">-</td>
-                <td><button class="select-btn" id="select-large-straight" onclick="selectScore('large-straight')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-large-straight" onclick="selectScore('large-straight')" disabled></button></td>
             </tr>
             <tr>
                 <td>Mahtzee</td>
                 <td>Five of a kind</td>
                 <td id="yahtzee">-</td>
-                <td><button class="select-btn" id="select-yahtzee" onclick="selectScore('yahtzee')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-yahtzee" onclick="selectScore('yahtzee')" disabled></button></td>
             </tr>
             <tr>
                 <td>Chance</td>
                 <td>Any combination</td>
                 <td id="chance">-</td>
-                <td><button class="select-btn" id="select-chance" onclick="selectScore('chance')" disabled>Select</button></td>
+                <td><button class="select-btn" id="select-chance" onclick="selectScore('chance')" disabled></button></td>
             </tr>
             <tr>
                 <td colspan="4" class="section-header">Score Summary</td>
@@ -753,6 +1016,12 @@
             <p>Your final score: <span id="final-score">0</span></p>
             <button id="play-again-btn" onclick="startNewGame()">Play Again</button>
         </div>
+    </div>
+
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span style="font-size: 1.5em;">☀️</span>
+        <div class="theme-toggle-switch"></div>
+        <span style="font-size: 1.5em;">🌑</span>
     </div>
 
     <script>
@@ -859,53 +1128,6 @@
             }
         }
     
-        // Roll the dice
-        function rollDice() {
-            if (rollCount >= 3) return;
-            
-            rollCount++;
-            document.getElementById('roll-number').textContent = rollCount;
-            
-            
-            // Animate dice
-            for (let i = 1; i <= 5; i++) {
-                console.log(i)
-                const dieElement = document.getElementById(`die${i}`);
-                if (!held[i-1]) {
-                    dieElement.classList.add('dice-animation');
-                    setTimeout(() => {
-                        dieElement.classList.remove('dice-animation');
-                    }, 500);
-                    
-                    // Generate random value and log it
-                    const newValue = Math.floor(Math.random() * 6) + 1;
-                    dice[i-1] = newValue;
-                    dieElement.setAttribute('data-value', newValue);
-                }
-            }
-            
-            // Log final dice array
-            console.log('Final dice values:', dice);
-            
-            // Count dice occurrences for debugging
-            const counts = new Array(6).fill(0);
-            for (let die of dice) {
-                counts[die-1]++;
-            }
-            console.log('Dice counts:', counts);
-            
-            // Check for five of a kind after the roll
-            if (counts.includes(5)) {
-                celebrateMahtzee();
-            }
-            
-            updatePossibleScores();
-            
-            if (rollCount === 3) {
-                document.getElementById('roll-button').disabled = true;
-            }
-        }
-    
         // Toggle hold status of a die
         function toggleHold(dieIndex) {
             if (rollCount === 0) return;
@@ -920,191 +1142,216 @@
             }
         }
     
+        // Roll the dice
+        function rollDice() {
+            if (rollCount >= 3) {
+                // If at max rolls, treat this as starting a new turn
+                startNextTurn();
+            }
+            rollSelectedDice();
+        }
+    
         // Calculate and update possible scores
-      // Replace this function in the JavaScript code
-function updatePossibleScores() {
-    if (rollCount === 0) {
-        // Disable all select buttons when no roll has been made
-        document.querySelectorAll('.select-btn').forEach(btn => {
-            btn.disabled = true;
-        });
-        
-        // Initialize upper section scores to 0
-        for (let i = 1; i <= 6; i++) {
-            const id = numberToWord(i) + 's';
-            if (scores[id] === null) {
-                document.getElementById(id).textContent = '0';
+        function updatePossibleScores() {
+            if (rollCount === 0) {
+                // Disable all select buttons when no roll has been made
+                document.querySelectorAll('.select-btn').forEach(btn => {
+                    btn.disabled = true;
+                });
+                
+                // Initialize upper section scores to 0
+                for (let i = 1; i <= 6; i++) {
+                    const id = numberToWord(i) + 's';
+                    if (scores[id] === null) {
+                        document.getElementById(id).textContent = '0';
+                    }
+                }
+                return;
+            }
+            
+            // Count dice occurrences
+            const counts = new Array(6).fill(0);
+            for (let die of dice) {
+                counts[die-1]++;
+            }
+            
+            // Log the dice values and counts for debugging
+            console.log('Current dice values:', dice);
+            console.log('Dice counts array:', counts);
+            
+            // Upper section
+            for (let i = 1; i <= 6; i++) {
+                const id = numberToWord(i) + 's';
+                const selectBtnId = 'select-' + id;
+                
+                if (scores[id] === null) {
+                    const scoreElement = document.getElementById(id);
+                    const selectBtn = document.getElementById(selectBtnId);
+                    
+                    // Calculate potential score
+                    const potentialScore = counts[i-1] * i;
+                    
+                    // Always update the score and enable the button after a roll
+                    scoreElement.textContent = potentialScore.toString();
+                    selectBtn.disabled = false;
+                    
+                    // Debug logging for all upper section categories
+                    console.log(`Scoring details for ${id}:`);
+                    console.log(`Count at index ${i-1}:`, counts[i-1]);
+                    console.log(`Potential score:`, potentialScore);
+                }
+            }
+            
+            // Rest of the function remains the same...
+            // Lower section
+            // Three of a kind
+            if (scores['three-of-a-kind'] === null) {
+                const scoreElement = document.getElementById('three-of-a-kind');
+                const selectBtn = document.getElementById('select-three-of-a-kind');
+                
+                if (counts.some(count => count >= 3)) {
+                    scoreElement.textContent = sumDice();
+                } else {
+                    scoreElement.textContent = 0;
+                }
+                
+                // Enable the select button
+                selectBtn.disabled = false;
+            }
+            
+            // Four of a kind
+            if (scores['four-of-a-kind'] === null) {
+                const scoreElement = document.getElementById('four-of-a-kind');
+                const selectBtn = document.getElementById('select-four-of-a-kind');
+                
+                if (counts.some(count => count >= 4)) {
+                    scoreElement.textContent = sumDice();
+                } else {
+                    scoreElement.textContent = 0;
+                }
+                
+                // Enable the select button
+                selectBtn.disabled = false;
+            }
+            
+            // Full house
+            if (scores['full-house'] === null) {
+                const scoreElement = document.getElementById('full-house');
+                const selectBtn = document.getElementById('select-full-house');
+                
+                if ((counts.includes(3) && counts.includes(2)) || counts.includes(5)) {
+                    scoreElement.textContent = 25;
+                } else {
+                    scoreElement.textContent = 0;
+                }
+                
+                // Enable the select button
+                selectBtn.disabled = false;
+            }
+            
+            // Small straight
+            if (scores['small-straight'] === null) {
+                const scoreElement = document.getElementById('small-straight');
+                const selectBtn = document.getElementById('select-small-straight');
+                
+                if ((counts[0] >= 1 && counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1) || 
+                    (counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1) || 
+                    (counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1 && counts[5] >= 1)) {
+                    scoreElement.textContent = 30;
+                } else {
+                    scoreElement.textContent = 0;
+                }
+                
+                // Enable the select button
+                selectBtn.disabled = false;
+            }
+            
+            // Large straight
+            if (scores['large-straight'] === null) {
+                const scoreElement = document.getElementById('large-straight');
+                const selectBtn = document.getElementById('select-large-straight');
+                
+                if ((counts[0] >= 1 && counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1) || 
+                    (counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1 && counts[5] >= 1)) {
+                    scoreElement.textContent = 40;
+                } else {
+                    scoreElement.textContent = 0;
+                }
+                
+                // Enable the select button
+                selectBtn.disabled = false;
+            }
+            
+            // Yahtzee
+            if (scores['yahtzee'] === null) {
+                const scoreElement = document.getElementById('yahtzee');
+                const selectBtn = document.getElementById('select-yahtzee');
+                
+                if (counts.includes(5)) {
+                    scoreElement.textContent = 50;
+                } else {
+                    scoreElement.textContent = 0;
+                }
+                
+                // Enable the select button
+                selectBtn.disabled = false;
+            }
+            
+            // Chance
+            if (scores['chance'] === null) {
+                const scoreElement = document.getElementById('chance');
+                const selectBtn = document.getElementById('select-chance');
+                
+                scoreElement.textContent = sumDice();
+                
+                // Enable the select button
+                selectBtn.disabled = false;
             }
         }
-        return;
-    }
-    
-    // Count dice occurrences
-    const counts = new Array(6).fill(0);
-    for (let die of dice) {
-        counts[die-1]++;
-    }
-    
-    // Log the dice values and counts for debugging
-    console.log('Current dice values:', dice);
-    console.log('Dice counts array:', counts);
-    
-    // Upper section
-    for (let i = 1; i <= 6; i++) {
-        const id = numberToWord(i) + 's';
-        const selectBtnId = 'select-' + id;
-        
-        if (scores[id] === null) {
-            const scoreElement = document.getElementById(id);
-            const selectBtn = document.getElementById(selectBtnId);
-            
-            // Calculate potential score
-            const potentialScore = counts[i-1] * i;
-            
-            // Always update the score and enable the button after a roll
-            scoreElement.textContent = potentialScore.toString();
-            selectBtn.disabled = false;
-            
-            // Debug logging for all upper section categories
-            console.log(`Scoring details for ${id}:`);
-            console.log(`Count at index ${i-1}:`, counts[i-1]);
-            console.log(`Potential score:`, potentialScore);
-        }
-    }
-    
-    // Rest of the function remains the same...
-    // Lower section
-    // Three of a kind
-    if (scores['three-of-a-kind'] === null) {
-        const scoreElement = document.getElementById('three-of-a-kind');
-        const selectBtn = document.getElementById('select-three-of-a-kind');
-        
-        if (counts.some(count => count >= 3)) {
-            scoreElement.textContent = sumDice();
-        } else {
-            scoreElement.textContent = 0;
-        }
-        
-        // Enable the select button
-        selectBtn.disabled = false;
-    }
-    
-    // Four of a kind
-    if (scores['four-of-a-kind'] === null) {
-        const scoreElement = document.getElementById('four-of-a-kind');
-        const selectBtn = document.getElementById('select-four-of-a-kind');
-        
-        if (counts.some(count => count >= 4)) {
-            scoreElement.textContent = sumDice();
-        } else {
-            scoreElement.textContent = 0;
-        }
-        
-        // Enable the select button
-        selectBtn.disabled = false;
-    }
-    
-    // Full house
-    if (scores['full-house'] === null) {
-        const scoreElement = document.getElementById('full-house');
-        const selectBtn = document.getElementById('select-full-house');
-        
-        if ((counts.includes(3) && counts.includes(2)) || counts.includes(5)) {
-            scoreElement.textContent = 25;
-        } else {
-            scoreElement.textContent = 0;
-        }
-        
-        // Enable the select button
-        selectBtn.disabled = false;
-    }
-    
-    // Small straight
-    if (scores['small-straight'] === null) {
-        const scoreElement = document.getElementById('small-straight');
-        const selectBtn = document.getElementById('select-small-straight');
-        
-        if ((counts[0] >= 1 && counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1) || 
-            (counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1) || 
-            (counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1 && counts[5] >= 1)) {
-            scoreElement.textContent = 30;
-        } else {
-            scoreElement.textContent = 0;
-        }
-        
-        // Enable the select button
-        selectBtn.disabled = false;
-    }
-    
-    // Large straight
-    if (scores['large-straight'] === null) {
-        const scoreElement = document.getElementById('large-straight');
-        const selectBtn = document.getElementById('select-large-straight');
-        
-        if ((counts[0] >= 1 && counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1) || 
-            (counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1 && counts[5] >= 1)) {
-            scoreElement.textContent = 40;
-        } else {
-            scoreElement.textContent = 0;
-        }
-        
-        // Enable the select button
-        selectBtn.disabled = false;
-    }
-    
-    // Yahtzee
-    if (scores['yahtzee'] === null) {
-        const scoreElement = document.getElementById('yahtzee');
-        const selectBtn = document.getElementById('select-yahtzee');
-        
-        if (counts.includes(5)) {
-            scoreElement.textContent = 50;
-        } else {
-            scoreElement.textContent = 0;
-        }
-        
-        // Enable the select button
-        selectBtn.disabled = false;
-    }
-    
-    // Chance
-    if (scores['chance'] === null) {
-        const scoreElement = document.getElementById('chance');
-        const selectBtn = document.getElementById('select-chance');
-        
-        scoreElement.textContent = sumDice();
-        
-        // Enable the select button
-        selectBtn.disabled = false;
-    }
-}
         // Select a scoring category
         function selectScore(category) {
-            if (rollCount === 0 || scores[category] !== null) return;
-            
-            const scoreElement = document.getElementById(category);
-            let score = parseInt(scoreElement.textContent);
-            
-            if (isNaN(score)) {
-                score = 0;
-                console.log(`Warning: Score for ${category} was NaN, setting to 0`);
-            }
-            
-            scores[category] = score;
-            scoreElement.textContent = score;
+            if (rollCount === 0) return;
             
             const selectBtn = document.getElementById('select-' + category);
-            if (selectBtn) {
-                selectBtn.disabled = true;
+            const scoreElement = document.getElementById(category);
+            const nextTurnBtn = document.getElementById('next-turn-button');
+            const rollBtn = document.getElementById('roll-button');
+            
+            // If this category was already selected this turn, unselect it
+            if (selectBtn.classList.contains('selected')) {
+                selectBtn.classList.remove('selected');
+                nextTurnBtn.disabled = true;
+                rollBtn.disabled = false;
+                return;
             }
             
-            // Disable dice after selection
-            const diceContainer = document.querySelector('.dice-container');
-            diceContainer.classList.add('disabled');
+            // Remove selected class from any other buttons
+            document.querySelectorAll('.select-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
             
-            updateTotalScore();
-            resetTurn();
-            checkGameOver();
+            // Add selected class to this button
+            selectBtn.classList.add('selected');
+            
+            // Enable the next turn button and disable roll button
+            nextTurnBtn.disabled = false;
+            rollBtn.disabled = true;
+            
+            // Function to commit the score
+            function commitScore() {
+                const score = parseInt(scoreElement.textContent);
+                scores[category] = isNaN(score) ? 0 : score;
+                selectBtn.disabled = true;
+                selectBtn.classList.remove('selected');
+                updateTotalScore();
+                nextTurnBtn.disabled = true;
+                rollBtn.disabled = false;
+                checkGameOver();
+            }
+            
+            // Commit score on next roll or when next turn button is clicked
+            rollBtn.addEventListener('click', commitScore, { once: true });
+            nextTurnBtn.addEventListener('click', commitScore, { once: true });
         }
     
         // Show tab
@@ -1175,7 +1422,10 @@ function updatePossibleScores() {
             
             held = [false, false, false, false, false];
             for (let i = 1; i <= 5; i++) {
-                document.getElementById(`die${i}`).classList.remove('held');
+                const dieElement = document.getElementById(`die${i}`);
+                dieElement.classList.remove('held');
+                dieElement.classList.remove('disabled-die');
+                dieElement.classList.add('unrolled');
             }
             
             document.getElementById('roll-button').disabled = false;
@@ -1407,6 +1657,87 @@ function updatePossibleScores() {
                     banner.remove();
                 }, 2000);
             }
+        }
+
+        function rollSelectedDice() {
+            if (rollCount >= 3) return;
+            
+            rollCount++;
+            document.getElementById('roll-number').textContent = rollCount;
+            
+            // Remove unrolled class from all dice when first rolling
+            if (rollCount === 1) {
+                // Roll and animate all dice on first roll
+                for (let i = 0; i < dice.length; i++) {
+                    const dieElement = document.getElementById(`die${i+1}`);
+                    dieElement.classList.remove('unrolled');
+                    dieElement.classList.add('dice-animation');
+                    dice[i] = Math.floor(Math.random() * 6) + 1;
+                    setTimeout(() => {
+                        dieElement.classList.remove('dice-animation');
+                    }, 800);
+                }
+                
+                // Only sort the dice array on the first roll
+                dice.sort((a, b) => a - b);
+            } else {
+                // For subsequent rolls, only roll and animate selected dice
+                // and maintain their positions
+                for (let i = 0; i < dice.length; i++) {
+                    if (held[i]) {
+                        dice[i] = Math.floor(Math.random() * 6) + 1;
+                        const dieElement = document.getElementById(`die${i+1}`);
+                        dieElement.classList.add('dice-animation');
+                        setTimeout(() => {
+                            dieElement.classList.remove('dice-animation');
+                        }, 800);
+                    }
+                }
+            }
+            
+            // Update the dice display
+            for (let i = 0; i < dice.length; i++) {
+                const dieElement = document.getElementById(`die${i+1}`);
+                dieElement.setAttribute('data-value', dice[i]);
+            }
+            
+            // After rolling, reset all dice states
+            for (let i = 0; i < dice.length; i++) {
+                const dieElement = document.getElementById(`die${i+1}`);
+                dieElement.classList.remove('held');
+                dieElement.classList.remove('disabled-die');
+                held[i] = false;
+            }
+            
+            // Disable roll button if max rolls reached
+            if (rollCount >= 3) {
+                document.getElementById('roll-button').disabled = true;
+            }
+            
+            updatePossibleScores();
+        }
+
+        // Add theme toggle function
+        function toggleTheme() {
+            const toggle = document.querySelector('.theme-toggle');
+            const diceContainer = document.querySelector('.dice-container');
+            toggle.classList.toggle('dark');
+            diceContainer.classList.toggle('dark-mode');
+        }
+
+        // Toggle instructions visibility
+        function toggleInstructions() {
+            const instructions = document.getElementById('instructions');
+            instructions.classList.toggle('show');
+            const toggle = document.querySelector('.instructions-toggle');
+            toggle.textContent = instructions.classList.contains('show') ? 'Hide Instructions' : 'Show Instructions';
+        }
+
+        // Add new function to handle starting next turn
+        function startNextTurn() {
+            resetTurn();
+            document.getElementById('next-turn-button').disabled = true;
+            document.getElementById('roll-button').disabled = false;
         }
     </script>
     </body>
