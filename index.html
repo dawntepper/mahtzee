@@ -304,7 +304,7 @@
             width: 28px;
             height: 28px;
             border: 2px solid #ff9f43;
-            border-radius: 4px;
+            border-radius: 50%;
             background-color: transparent;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: absolute;
@@ -622,7 +622,7 @@
             height: 45px;
         }
 
-        /* Mahtzee bonus styles */
+        /* Mahtzee bonus styles - square checkboxes */
         .mahtzee-bonus-container {
             display: flex;
             gap: 10px;
@@ -634,7 +634,7 @@
             width: 24px;
             height: 24px;
             border: 2px solid #2a9d8f;
-            border-radius: 50%;
+            border-radius: 4px;
             cursor: pointer;
             position: relative;
             background: transparent;
@@ -655,8 +655,8 @@
             position: absolute;
             width: 16px;
             height: 16px;
-            background-color: #ffcdd2;
-            border-radius: 50%;
+            background-color: rgba(46, 204, 113, 0.1);
+            border-radius: 2px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -665,7 +665,7 @@
         .bonus-radio.checked::after {
             content: '✓';
             position: absolute;
-            color: black;
+            color: #2ecc71;
             font-size: 14px;
             font-weight: bold;
             left: 50%;
