@@ -1057,6 +1057,12 @@
                 <td><button class="select-btn" id="select-yahtzee" onclick="selectScore('yahtzee')" disabled></button></td>
             </tr>
             <tr>
+                <td>Chance</td>
+                <td>Any combination</td>
+                <td id="chance">-</td>
+                <td><button class="select-btn" id="select-chance" onclick="selectScore('chance')" disabled></button></td>
+            </tr>
+            <tr>
                 <td>Mahtzee Bonus</td>
                 <td>Additional Mahtzees</td>
                 <td id="mahtzee-bonus">0</td>
@@ -1067,12 +1073,6 @@
                         <div class="bonus-radio" id="mahtzee-bonus-3" onclick="selectMahtzeeBonus(3)"></div>
                     </div>
                 </td>
-            </tr>
-            <tr>
-                <td>Chance</td>
-                <td>Any combination</td>
-                <td id="chance">-</td>
-                <td><button class="select-btn" id="select-chance" onclick="selectScore('chance')" disabled></button></td>
             </tr>
             <tr>
                 <td colspan="4" class="section-header">Score Summary</td>
@@ -1376,6 +1376,7 @@
                 if ((counts[0] >= 1 && counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1) || 
                     (counts[1] >= 1 && counts[2] >= 1 && counts[3] >= 1 && counts[4] >= 1 && counts[5] >= 1)) {
                     scoreElement.textContent = 40;
+                    createConfetti(100);
                 } else {
                     scoreElement.textContent = 0;
                 }
@@ -1444,11 +1445,15 @@
                 const score = parseInt(scoreElement.textContent);
                 scores[category] = isNaN(score) ? 0 : score;
                 selectBtn.disabled = true;
-                selectBtn.classList.remove('selected');
+                selectBtn.classList.add('selected');
                 updateTotalScore();
                 nextTurnBtn.disabled = true;
                 rollBtn.disabled = false;
-                checkGameOver();
+                
+                // Check if game is over immediately after committing score
+                if (Object.values(scores).every(score => score !== null)) {
+                    checkGameOver();
+                }
             }
             
             // Commit score on next roll or when next turn button is clicked
@@ -1575,6 +1580,10 @@
                 
                 saveGameToHistory(finalScore);
                 createConfetti(100);
+                
+                // Disable the Next Turn and Roll buttons since game is over
+                document.getElementById('next-turn-button').disabled = true;
+                document.getElementById('roll-button').disabled = true;
             }
         }
     
