@@ -1605,6 +1605,7 @@
                 const selectBtn = document.getElementById('select-' + category);
                 if (selectBtn) {
                     selectBtn.disabled = true;
+                    selectBtn.classList.remove('selected'); // Clear the selected state
                 }
             }
             
@@ -1841,6 +1842,18 @@
                 held[i] = false;
             }
             
+            // Check for Mahtzee immediately after rolling
+            const counts = new Array(6).fill(0);
+            for (let die of dice) {
+                counts[die-1]++;
+            }
+            if (counts.includes(5)) {
+                createConfetti(100);
+                if (scores['yahtzee'] === 50) {
+                    celebrateMahtzee();
+                }
+            }
+            
             // Disable roll button if max rolls reached
             if (rollCount >= 3) {
                 document.getElementById('roll-button').disabled = true;
@@ -1901,18 +1914,24 @@
                 counts[die-1]++;
             }
             
-            // If we have a Mahtzee and the original Mahtzee category is filled with 50 points
-            if (counts.includes(5) && scores['yahtzee'] === 50) {
-                mahtzeeCount++;
+            // If we have a Mahtzee (five of a kind)
+            if (counts.includes(5)) {
+                // Create confetti for any Mahtzee
+                createConfetti(100);
                 
-                // Enable the next available bonus checkbox
-                if (mahtzeeCount <= 3) {
-                    const bonusElement = document.getElementById(`mahtzee-bonus-${mahtzeeCount}`);
-                    bonusElement.classList.add('available');
+                // If this is an additional Mahtzee after scoring 50 in the Mahtzee category
+                if (scores['yahtzee'] === 50) {
+                    mahtzeeCount++;
+                    
+                    // Enable the next available bonus checkbox
+                    if (mahtzeeCount <= 3) {
+                        const bonusElement = document.getElementById(`mahtzee-bonus-${mahtzeeCount}`);
+                        bonusElement.classList.add('available');
+                    }
+                    
+                    // Celebrate the additional Mahtzee
+                    celebrateMahtzee();
                 }
-                
-                // Celebrate the additional Mahtzee
-                celebrateMahtzee();
             }
         }
 
