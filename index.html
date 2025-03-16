@@ -1554,7 +1554,14 @@
     
         // Check if game is over
         function checkGameOver() {
-            const allCategoriesFilled = Object.values(scores).every(score => score !== null);
+            // Only check main scoring categories (not bonus checkboxes)
+            const mainCategories = [
+                'ones', 'twos', 'threes', 'fours', 'fives', 'sixs',
+                'three-of-a-kind', 'four-of-a-kind', 'full-house',
+                'small-straight', 'large-straight', 'yahtzee', 'chance'
+            ];
+            
+            const allCategoriesFilled = mainCategories.every(category => scores[category] !== null);
             
             if (allCategoriesFilled) {
                 const finalScore = parseInt(document.getElementById('grand-total').textContent);
@@ -1581,9 +1588,15 @@
                 saveGameToHistory(finalScore);
                 createConfetti(100);
                 
-                // Disable the Next Turn and Roll buttons since game is over
+                // Disable all buttons since game is over
                 document.getElementById('next-turn-button').disabled = true;
                 document.getElementById('roll-button').disabled = true;
+                
+                // Disable any remaining Mahtzee bonus checkboxes
+                for (let i = 1; i <= 3; i++) {
+                    const bonusElement = document.getElementById(`mahtzee-bonus-${i}`);
+                    bonusElement.classList.remove('available');
+                }
             }
         }
     
@@ -1639,7 +1652,7 @@
             mahtzeeBonus = [false, false, false];
             document.getElementById('mahtzee-bonus').textContent = '0';
             
-            // Reset bonus checkboxes
+            // Make sure all Mahtzee bonus checkboxes are disabled at start
             for (let i = 1; i <= 3; i++) {
                 const bonusElement = document.getElementById(`mahtzee-bonus-${i}`);
                 bonusElement.classList.remove('available', 'checked');
@@ -1923,8 +1936,14 @@
                 if (scores['yahtzee'] === 50) {
                     mahtzeeCount++;
                     
-                    // Enable the next available bonus checkbox
+                    // Only enable the next checkbox in sequence
                     if (mahtzeeCount <= 3) {
+                        // First disable all bonus checkboxes
+                        for (let i = 1; i <= 3; i++) {
+                            const bonusElement = document.getElementById(`mahtzee-bonus-${i}`);
+                            bonusElement.classList.remove('available');
+                        }
+                        // Then enable only the current one
                         const bonusElement = document.getElementById(`mahtzee-bonus-${mahtzeeCount}`);
                         bonusElement.classList.add('available');
                     }
