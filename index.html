@@ -1440,8 +1440,8 @@
             nextTurnBtn.disabled = false;
             rollBtn.disabled = true;
             
-            // Function to commit the score
-            function commitScore() {
+            // Create event listener functions
+            const commitScore = () => {
                 const score = parseInt(scoreElement.textContent);
                 scores[category] = isNaN(score) ? 0 : score;
                 selectBtn.disabled = true;
@@ -1450,15 +1450,19 @@
                 nextTurnBtn.disabled = true;
                 rollBtn.disabled = false;
                 
+                // Remove event listeners
+                rollBtn.removeEventListener('click', commitScore);
+                nextTurnBtn.removeEventListener('click', commitScore);
+                
                 // Check if game is over immediately after committing score
                 if (Object.values(scores).every(score => score !== null)) {
                     checkGameOver();
                 }
-            }
+            };
             
-            // Commit score on next roll or when next turn button is clicked
-            rollBtn.addEventListener('click', commitScore, { once: true });
-            nextTurnBtn.addEventListener('click', commitScore, { once: true });
+            // Add event listeners
+            rollBtn.addEventListener('click', commitScore);
+            nextTurnBtn.addEventListener('click', commitScore);
         }
     
         // Show tab
@@ -1861,7 +1865,7 @@
                 counts[die-1]++;
             }
             if (counts.includes(5)) {
-                createConfetti(100);
+                createConfetti(150);
                 if (scores['yahtzee'] === 50) {
                     celebrateMahtzee();
                 }
@@ -1930,7 +1934,7 @@
             // If we have a Mahtzee (five of a kind)
             if (counts.includes(5)) {
                 // Create confetti for any Mahtzee
-                createConfetti(100);
+                createConfetti(150);
                 
                 // If this is an additional Mahtzee after scoring 50 in the Mahtzee category
                 if (scores['yahtzee'] === 50) {
