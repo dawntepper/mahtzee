@@ -1933,8 +1933,12 @@
             
             // If we have a Mahtzee (five of a kind)
             if (counts.includes(5)) {
-                // Create confetti for any Mahtzee
-                createConfetti(150);
+                // Create multiple waves of confetti for any Mahtzee
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        createConfetti(150, true); // true for colorful confetti
+                    }, i * 500); // Stagger the waves by 500ms
+                }
                 
                 // If this is an additional Mahtzee after scoring 50 in the Mahtzee category
                 if (scores['yahtzee'] === 50) {
@@ -1989,8 +1993,8 @@
                 
                 document.body.appendChild(banner);
                 
-                // Create some confetti to celebrate
-                createConfetti(100);
+                // Create a single burst of confetti
+                createConfetti(150, true);
                 
                 // Remove the banner after 2 seconds
                 setTimeout(() => {
