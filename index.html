@@ -1908,6 +1908,8 @@
         // Add the selectMahtzeeBonus function
         function selectMahtzeeBonus(index) {
             const bonusElement = document.getElementById(`mahtzee-bonus-${index}`);
+            const nextTurnBtn = document.getElementById('next-turn-button');
+            const rollBtn = document.getElementById('roll-button');
             
             // Only allow selection if this bonus is available
             if (!bonusElement.classList.contains('available')) {
@@ -1921,6 +1923,10 @@
             // Update the score
             updateMahtzeeBonusScore();
             updateTotalScore();
+            
+            // Ensure the next turn button is enabled and roll button is disabled
+            nextTurnBtn.disabled = false;
+            rollBtn.disabled = true;
         }
 
         // Add function to check for additional Mahtzees
