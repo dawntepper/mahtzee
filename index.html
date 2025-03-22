@@ -1963,6 +1963,43 @@
             const bonusScore = mahtzeeBonus.filter(bonus => bonus).length * 100;
             document.getElementById('mahtzee-bonus').textContent = bonusScore;
         }
+
+        // Add finishGame function
+        function finishGame() {
+            if (confirm('Are you sure you want to finish this game? Your current score will be saved.')) {
+                // Get the current total score
+                const currentScore = parseInt(document.getElementById('grand-total').textContent) || 0;
+                
+                // Save the game to history
+                saveGameToHistory(currentScore);
+                
+                // Show a completion message
+                const banner = document.createElement('div');
+                banner.innerHTML = '<h3>Game Finished!</h3>';
+                banner.style.position = 'fixed';
+                banner.style.top = '40%';
+                banner.style.left = '50%';
+                banner.style.transform = 'translate(-50%, -50%)';
+                banner.style.backgroundColor = 'rgba(42, 157, 143, 0.9)';
+                banner.style.color = 'white';
+                banner.style.padding = '20px 40px';
+                banner.style.borderRadius = '10px';
+                banner.style.zIndex = '1000';
+                banner.style.textAlign = 'center';
+                
+                document.body.appendChild(banner);
+                
+                // Create some confetti to celebrate
+                createConfetti(100);
+                
+                // Remove the banner after 2 seconds
+                setTimeout(() => {
+                    banner.remove();
+                    // Start a new game
+                    startNewGame();
+                }, 2000);
+            }
+        }
     </script>
     </body>
     </html>
