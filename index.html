@@ -1454,9 +1454,20 @@
                 rollBtn.removeEventListener('click', commitScore);
                 nextTurnBtn.removeEventListener('click', commitScore);
                 
-                // Check if game is over immediately after committing score
-                if (Object.values(scores).every(score => score !== null)) {
-                    checkGameOver();
+                // Check if all categories are filled
+                const mainCategories = [
+                    'ones', 'twos', 'threes', 'fours', 'fives', 'sixs',
+                    'three-of-a-kind', 'four-of-a-kind', 'full-house',
+                    'small-straight', 'large-straight', 'yahtzee', 'chance'
+                ];
+                
+                const allCategoriesFilled = mainCategories.every(cat => scores[cat] !== null);
+                
+                // If all categories are filled, trigger game over
+                if (allCategoriesFilled) {
+                    setTimeout(() => {
+                        checkGameOver();
+                    }, 100);
                 }
             };
             
@@ -1558,16 +1569,29 @@
     
         // Check if game is over
         function checkGameOver() {
-            // Only check main scoring categories (not bonus checkboxes)
+            // Check main scoring categories
             const mainCategories = [
                 'ones', 'twos', 'threes', 'fours', 'fives', 'sixs',
                 'three-of-a-kind', 'four-of-a-kind', 'full-house',
                 'small-straight', 'large-straight', 'yahtzee', 'chance'
             ];
             
-            const allCategoriesFilled = mainCategories.every(category => scores[category] !== null);
+            const allMainCategoriesFilled = mainCategories.every(category => scores[category] !== null);
             
-            if (allCategoriesFilled) {
+            // Check if there are any available but unchecked Mahtzee bonuses
+            let hasUnfilledAvailableBonuses = false;
+            if (scores['yahtzee'] === 50) { // Only check bonuses if original Mahtzee was scored
+                for (let i = 1; i <= 3; i++) {
+                    const bonusElement = document.getElementById(`mahtzee-bonus-${i}`);
+                    if (bonusElement.classList.contains('available') && !bonusElement.classList.contains('checked')) {
+                        hasUnfilledAvailableBonuses = true;
+                        break;
+                    }
+                }
+            }
+            
+            // Game is over if all main categories are filled AND there are no available unchecked bonuses
+            if (allMainCategoriesFilled && !hasUnfilledAvailableBonuses) {
                 const finalScore = parseInt(document.getElementById('grand-total').textContent);
                 document.getElementById('final-score').textContent = finalScore;
                 
@@ -1590,7 +1614,7 @@
                 modal.style.display = 'flex';
                 
                 saveGameToHistory(finalScore);
-                createConfetti(100);
+                createConfetti(150, true);
                 
                 // Disable all buttons since game is over
                 document.getElementById('next-turn-button').disabled = true;
@@ -1976,7 +2000,7 @@
 
         // Add finishGame function
         function finishGame() {
-            if (confirm('Are you sure you want to finish this game? Your current score will be saved...')) {
+            if (confirm('Are you sure you want to finish this game? Your current score will be saved.')) {
                 // Get the current total score
                 const currentScore = parseInt(document.getElementById('grand-total').textContent) || 0;
                 
